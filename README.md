@@ -1,4 +1,4 @@
-### 📝 README.md
+###  README.md
 
 ````markdown
 # SPEF - Secure Prompt Engineering Framework
@@ -7,13 +7,13 @@
 
 ---
 
-## 🛡️ Project Overview
+##  Project Overview
 
 SPEF (Secure Prompt Engineering Framework) is an application-level defensive architecture designed to mitigate common vulnerabilities in Large Language Model (LLM) implementations. This project evaluates the framework's effectiveness using **Llama-3.3-70B** (via Groq API) against a standardized corpus of adversarial attacks.
 
 This repository contains the experimental runner, the evaluation scripts, and the dataset used in the research paper: *"Secure Prompt Engineering: A Practical Framework for Mitigating Prompt Injection and Data Leakage in LLM-based Systems"*.
 
-## 🏗️ The 4-Layer Architecture
+##  The 4-Layer Architecture
 
 The framework operates on a black-box principle, requiring no fine-tuning or access to model weights:
 
@@ -22,7 +22,7 @@ The framework operates on a black-box principle, requiring no fine-tuning or acc
 3.  **Layer 3: Context Isolation** – Separates user-provided data from system instructions semantically.
 4.  **Layer 4: Output Validation** – Inspects model responses for sensitive data leakage before final delivery.
 
-## 📊 Key Results
+##  Key Results
 
 In our controlled experiment with **85 test cases** (170 total interactions), SPEF demonstrated:
 
@@ -42,7 +42,6 @@ In our controlled experiment with **85 test cases** (170 total interactions), SP
    ```bash
    git clone [https://github.com/engguga/spef_experiment.git](https://github.com/engguga/spef_experiment.git)
    cd spef_experiment
-````
 
 2.  Create and activate a virtual environment:
     ```bash
@@ -73,14 +72,14 @@ In our controlled experiment with **85 test cases** (170 total interactions), SP
     python scripts/scorer.py
     ```
 
-## 📁 Repository Structure
+##  Repository Structure
 
   * `scripts/`: Python scripts for running experiments and scoring results.
   * `corpus/`: JSON files containing the adversarial prompt dataset.
   * `results/`: Raw JSON outputs from the LLM interactions.
   * `reports/`: Generated CSV files with final security metrics.
 
-## 🎓 Citation
+##  Citation
 
 If you use this framework or dataset in your research, please cite:
 
