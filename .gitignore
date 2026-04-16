@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+venv/
+*.pyc
+
+# Sensível (Resultados e Chaves)
+results/
+reports/*.csv
+.env
+
+# Chaves de API (se você criar um arquivo separado)
+config.py
+
