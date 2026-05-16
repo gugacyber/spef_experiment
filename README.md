@@ -1,90 +1,179 @@
-###  README.md
-
 ````markdown
-# SPEF - Secure Prompt Engineering Framework
+# SPEF — Secure Prompt Engineering Framework
 
-**Empirical Evaluation of a Four-Layer Defensive Architecture against Prompt Injection and Data Leakage.**
+**Research framework for adversarial LLM evaluation, prompt injection analysis, and Attack Success Rate (ASR) scoring reliability.**
 
 ---
 
-##  Project Overview
+## Overview
 
-SPEF (Secure Prompt Engineering Framework) is an application-level defensive architecture designed to mitigate common vulnerabilities in Large Language Model (LLM) implementations. This project evaluates the framework's effectiveness using **Llama-3.3-70B** (via Groq API) against a standardized corpus of adversarial attacks.
+SPEF (Secure Prompt Engineering Framework) is an experimental framework focused on evaluating the reliability of adversarial Large Language Model (LLM) security assessment methodologies.
 
-This repository contains the experimental runner, the evaluation scripts, and the dataset used in the research paper: *"Secure Prompt Engineering: A Practical Framework for Mitigating Prompt Injection and Data Leakage in LLM-based Systems"*.
+The project investigates how scorer implementation choices directly affect reported Attack Success Rate (ASR) metrics in prompt injection and adversarial evaluation experiments.
 
-##  The 4-Layer Architecture
+This repository contains:
+- adversarial evaluation scripts
+- scorer implementations
+- experimental datasets
+- statistical evaluation utilities
+- reproducible security experiments
 
-The framework operates on a black-box principle, requiring no fine-tuning or access to model weights:
+The framework was evaluated using **Llama-3.3-70B** via the :contentReference[oaicite:0]{index=0} against an OWASP-aligned adversarial corpus.
 
-1.  **Layer 1: Prompt Structuring** – Enforces structural boundaries using delimiters and system-level instructions.
-2.  **Layer 2: Input Sanitization** – Filters malicious keywords and known injection patterns.
-3.  **Layer 3: Context Isolation** – Separates user-provided data from system instructions semantically.
-4.  **Layer 4: Output Validation** – Inspects model responses for sensitive data leakage before final delivery.
+---
 
-##  Key Results
+## Research Paper
 
-In our controlled experiment with **85 test cases** (170 total interactions), SPEF demonstrated:
+### ASR Does Not Measure What You Think It Measures
 
-* **Baseline ASR (Attack Success Rate):** 8.8%
-* **SPEF ASR:** 1.8%
-* **Relative Reduction:** **79.5%**
-* **Complete Mitigation (0% ASR):** Achieved in *Indirect Injection* and *Role Reassignment* categories.
+*A Comparative Analysis of Attack Success Scoring Methods in Adversarial LLM Evaluation*
 
-## 🚀 Getting Started
+📄 Zenodo DOI:  
+https://doi.org/10.5281/zenodo.20245521
 
-### Prerequisites
-* Python 3.10+
-* Groq Cloud API Key (Free tier supported)
+📚 Publication Page:  
+https://zenodo.org/records/20245521
+
+---
+
+## Main Research Findings
+
+The study demonstrates that scorer design alone can significantly distort adversarial LLM evaluation results.
+
+### Experimental Results
+
+| Metric | Scorer A | Scorer B |
+|---|---|---|
+| F1 Score | 33.3% | 76.9% |
+| False Positive Rate | 7.1% | 1.4% |
+
+### Key Discovery
+
+Changing only the evaluation logic produced:
+
+- **+130.9% F1 improvement**
+- **−80.3% False Positive Rate reduction**
+
+without changing:
+- the model
+- the dataset
+- the attack corpus
+- the prompts
+
+---
+
+## Identified Scorer Failure Modes
+
+The research identifies three major evaluation failures in adversarial LLM scoring systems:
+
+1. **Refusal-Mention Ambiguity**  
+   Defensive responses mentioning sensitive terms are incorrectly classified as successful attacks.
+
+2. **Library Coverage Problem**  
+   Pattern-based scorers fail to detect successful attacks outside predefined vocabularies.
+
+3. **Indirect Injection Scoring Gap**  
+   Hybrid responses in retrieval-based attacks resist heuristic classification approaches.
+
+---
+
+## Refusal-First Standard
+
+The project proposes a minimal standard for adversarial LLM scoring systems:
+
+1. Refusal detection must precede compromise detection
+2. Success requires affirmative compliance
+3. Ambiguous cases default to defense
+4. False Positive Rate (FPR) must be reported alongside ASR
+
+---
+
+## Repository Structure
+
+```text
+scripts/     Experimental runners and scorers
+corpus/      Adversarial prompt datasets
+results/     Raw model outputs
+reports/     Statistical evaluation reports
+```
+
+---
+
+## Getting Started
+
+### Requirements
+
+- Python 3.10+
+- Groq API Key
 
 ### Installation
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/engguga/spef_experiment.git](https://github.com/engguga/spef_experiment.git)
-   cd spef_experiment
 
-2.  Create and activate a virtual environment:
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate  # Linux/macOS
-    ```
-3.  Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+git clone https://github.com/gugacyber/spef_experiment.git
+cd spef_experiment
 
-### Running the Experiment
+python3 -m venv venv
+source venv/bin/activate
 
-1.  Set your API Key in your terminal environment:
-    ```bash
-    export GROQ_API_KEY="your_gsk_key_here"
-    ```
-2.  Run the quick test (3 cases):
-    ```bash
-    python scripts/experiment.py quick
-    ```
-3.  Run the full experiment (85 cases):
-    ```bash
-    python scripts/experiment.py full
-    ```
-4.  Generate the statistical report:
-    ```bash
-    python scripts/scorer.py
-    ```
+pip install -r requirements.txt
+```
 
-##  Repository Structure
+---
 
-  * `scripts/`: Python scripts for running experiments and scoring results.
-  * `corpus/`: JSON files containing the adversarial prompt dataset.
-  * `results/`: Raw JSON outputs from the LLM interactions.
-  * `reports/`: Generated CSV files with final security metrics.
+## Running Experiments
 
-##  Citation
+### Quick Evaluation
 
-If you use this framework or dataset in your research, please cite:
+```bash
+python scripts/experiment.py quick
+```
 
-> Viana, G. L. (2025). *Secure Prompt Engineering: A Practical Framework for Mitigating Prompt Injection and Data Leakage in LLM-based Systems*. Anhanguera Educacional.
+### Full Evaluation
 
------
+```bash
+python scripts/experiment.py full
+```
 
-**Author:** [Gustavo Viana](https://www.google.com/search?q=https://github.com/engguga)
+### Generate Statistical Reports
+
+```bash
+python scripts/scorer.py
+```
+
+---
+
+## Citation
+
+```bibtex
+@misc{viana2026asr,
+  author       = {Viana, Gustavo Lima},
+  title        = {ASR Does Not Measure What You Think It Measures: A Comparative Analysis of Attack Success Scoring Methods in Adversarial LLM Evaluation},
+  year         = {2026},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.20245521},
+  url          = {https://doi.org/10.5281/zenodo.20245521}
+}
+```
+
+---
+
+## Research Areas
+
+- LLM Security
+- Prompt Injection
+- Adversarial Evaluation
+- AI Security
+- Benchmark Reliability
+- Secure Prompt Engineering
+- Attack Success Rate (ASR)
+
+---
+
+## Author
+
+**Gustavo Lima Viana**  
+Independent Researcher — Brazil
+
+GitHub: https://github.com/gugacyber  
+ORCID: https://orcid.org/0009-0003-7211-6774
+````
