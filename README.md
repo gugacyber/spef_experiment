@@ -1,4 +1,3 @@
-````markdown
 # SPEF — Secure Prompt Engineering Framework
 
 **Research framework for adversarial LLM evaluation, prompt injection analysis, and Attack Success Rate (ASR) scoring reliability.**
